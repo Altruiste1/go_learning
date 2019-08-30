@@ -12,18 +12,19 @@ type ConcurrentEngine struct {
 type Scheduler interface {
 	Submit(Request)
 	ConfigureMasterWorkerChan(chan Request)
-//	WorkerReady(chan Request)
-//	Run()
+	WorkerReady(chan Request)
+	Run()
 }
 
 func (e *ConcurrentEngine)Run(seeds ...Request){
-	in :=make(chan Request)
+	//in :=make(chan Request)
 	out :=make(chan ParseResult)
-	e.Scheduler.ConfigureMasterWorkerChan(in)
+	//e.Scheduler.ConfigureMasterWorkerChan(in)
+	e.Scheduler.Run()
 
 	//channel里读数据
 	for i:=0;i<e.WorkerCount;i++{
-		createWorker(in,out)
+		createWorker(out,e.Scheduler)
 	}
 
 	// 往channel写入数据,往scheduler发任务
@@ -47,10 +48,12 @@ func (e *ConcurrentEngine)Run(seeds ...Request){
 
 
 func createWorker(
-	in chan Request,out chan ParseResult){
+	out chan ParseResult,s Scheduler){
+		in:=make(chan Request)
 		go func(){
 			for{
-				// tell scheduler
+				// tell scheduler ready
+				s.WorkerReady(in)
 				request:= <- in
 				result,err:= worker(request)
 				if err!=nil{

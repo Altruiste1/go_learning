@@ -7,6 +7,7 @@ type QueueScheduler struct {
 	workerChan chan chan engine.Request
 }
 
+
 func (s *QueueScheduler)Submit(r engine.Request){
 	s.requestChan <-r
 }
@@ -16,7 +17,7 @@ func (s *QueueScheduler)WorkerReady(
 		s.workerChan<-w
 }
 
-func (s *QueueScheduler)ConfigureMasterWorkerChan(){
+func (s *QueueScheduler)ConfigureMasterWorkerChan(chan engine.Request){
 	panic("implement me")
 }
 

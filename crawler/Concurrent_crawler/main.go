@@ -12,8 +12,8 @@ func main() {
 	//	ParserFunc: parser.ParseCityList,
 	//})
 	e:=engine.ConcurrentEngine{
-		Scheduler:&scheduler.SimpleScheduler{},
-		WorkerCount:100,
+		Scheduler:&scheduler.QueueScheduler{},
+		WorkerCount:10,
 	}
 	e.Run(engine.Request{
 			Url:        "https://www.zhenai.com/n/register?channelId=901388&subChannelId=15026",
