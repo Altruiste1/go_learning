@@ -7,9 +7,9 @@ import (
 )
 
 func TestParseProfile(t *testing.T) {
-	contents,err:= ioutil.ReadFile("city.html")
-	if err!=nil{
-		t.Errorf("fetch failed:%s\n",err.Error())
+	contents, err := ioutil.ReadFile("city.html")
+	if err != nil {
+		t.Errorf("fetch failed:%s\n", err.Error())
 	}
 
 	var usernameList = []string{
@@ -17,6 +17,6 @@ func TestParseProfile(t *testing.T) {
 		"喜欢就好",
 	}
 
-	result:=ParseProfile(contents,usernameList[0])
-	fmt.Printf("%v",result.Items)
+	result := ParseProfile(contents, usernameList[0])
+	fmt.Printf("%v", result.Items)
 }
